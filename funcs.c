@@ -1,16 +1,5 @@
 #include "header.h"
 
-void set_str(char** f, int i, int j, char* str, int size_str) {
-	int count = 0;
-	//printf("%s", str);
-	while (count < size_str - 1) {
-		printf("%c", str[count]);
-		f[i][j + count] = str[count];
-		printf("%c\n", f[i][j + count]);
-		count++;
-	}
-}
-
 void draw_field(char** f, int M, int N) {
     for (int i = 0; i < M; i++) {
         for (int j = 0; j < N; j++) {
@@ -23,24 +12,22 @@ void draw_field(char** f, int M, int N) {
 void init_field(char** f, int M, int N) {
     int h_count = 0;
 	char str_n[] = "No.";
-
+    
     for (int i = 0; i < M; i++) {
-        for (int j = 0; j < N; j++) {
+        for (int j = 0; j < N - 1; j++) {
             if ((i == 0) || (i == M - 1)) {
                 f[i][j] = '-';
                 continue;
             }
-            if ((j == 0) || (j == N - 1)) {
+            if ((j == 0) || (j + 1 == N)) {
                 f[i][j] = '|';
                 continue;
-            } 
-			if (j == 1) {
-				set_str(f, i, j, str_n, (int)sizeof(str_n));
-				printf("%s\n", f[i]);
-				continue;
-			}else {
-                f[i][j] = ' '; 
             }
+            char buff[5];
+            sprintf(buff, "%d", h_count);
+            strcat(str_n, buff);
+            set_str_to_row(f, i, 1, str_n, strlen(str_n));
+            h_count++;
         }
     }
 }
@@ -50,4 +37,13 @@ void clear(char ** f, int M, int N) {
         free(f[i]);
     }
     free(f);
+    printf("Clear...\n");
+}
+
+void set_str_to_row(char** f, int i, int j, char* str, int size_str) {
+	int count = 0;
+	while (count <= size_str - 1) {
+		f[i][j + count] = str[count];
+		count++;
+	}
 }
